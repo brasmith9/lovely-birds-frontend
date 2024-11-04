@@ -1,7 +1,7 @@
 import {
   createRouter,
   createWebHistory,
-  type RouteRecordRaw
+  type RouteRecordRaw,
 } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
@@ -18,8 +18,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "dashboard",
         component: () => import("@/views/Dashboard.vue"),
         meta: {
-          pageTitle: "Home"
-        }
+          pageTitle: "Home",
+        },
       },
       {
         path: "/history",
@@ -27,10 +27,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/LayoutBuilder.vue"),
         meta: {
           pageTitle: "History",
-          breadcrumbs: []
-        }
-      }]
-  }];
+          breadcrumbs: [],
+        },
+      },
+    ],
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/404",
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,16 +47,16 @@ const router = createRouter({
       return {
         el: to.hash,
         top: 80,
-        behavior: "smooth"
+        behavior: "smooth",
       };
     } else {
       return {
         top: 0,
         left: 0,
-        behavior: "smooth"
+        behavior: "smooth",
       };
     }
-  }
+  },
 });
 
 router.beforeEach((to, from, next) => {
