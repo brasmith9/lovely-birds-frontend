@@ -14,9 +14,7 @@
       <div class="d-flex align-items-center">
         <h1 class="fw-semibold me-3 text-white">Search Book</h1>
 
-        <span class="fw-semibold text-white opacity-50"
-          >Nice words here</span
-        >
+        <span class="fw-semibold text-white opacity-50">Nice words here</span>
       </div>
       <!--end::Title-->
 
@@ -26,12 +24,12 @@
         <div class="d-lg-flex align-lg-items-center">
           <!--begin::Simple form-->
           <div
-            class="rounded d-flex flex-column flex-lg-row align-items-lg-center bg-body p-5 w-xxl-850px h-lg-60px me-lg-10 my-5"
+            class="rounded d-flex flex-column flex-lg-row align-items-lg-center bg-body p-5 w-xxl-950px h-lg-60px me-lg-10 my-5"
           >
             <!--begin::Row-->
             <div class="row flex-grow-1 mb-5 mb-lg-0">
               <!--begin::Col-->
-              <div class="col-lg-6 d-flex align-items-center mb-3 mb-lg-0">
+              <div class="col-lg-4 d-flex align-items-center mb-3 mb-lg-0">
                 <KTIcon
                   icon-name="magnifier"
                   icon-class="fs-1 text-gray-500 me-1"
@@ -50,7 +48,7 @@
               <!--end::Col-->
 
               <!--begin::Col-->
-              <div class="col-lg-6 d-flex align-items-center mb-5 mb-lg-0">
+              <div class="col-lg-4 d-flex align-items-center mb-5 mb-lg-0">
                 <!--begin::Desktop separartor-->
                 <div
                   class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
@@ -63,10 +61,41 @@
                 />
 
                 <!--begin::Select-->
-                <select class="form-select border-0 flex-grow-1">
-                  <option value="1" selected>Category</option>
-                  <option value="2">In Progress</option>
-                  <option value="3">Done</option>
+                <select class="form-select border-0 flex-grow-1" v-model="selectedCategory" @change="handleCategoryChange">
+                  <option v-if="showDefault" :value="selectedCategory" disabled selected >Category</option>
+                  <option
+                    v-for="(grouping, index) in categories"
+                    :key="index"
+                    :value="grouping"
+                  >
+                    {{ grouping.category }}
+                  </option>
+                </select>
+                <!--end::Select-->
+              </div>
+
+              <div class="col-lg-4 d-flex align-items-center mb-5 mb-lg-0">
+                <!--begin::Desktop separartor-->
+                <div
+                  class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
+                ></div>
+                <!--end::Desktop separartor-->
+
+                <KTIcon
+                  icon-name="element-11"
+                  icon-class="fs-1 text-gray-500 me-1"
+                />
+
+                <!--begin::Select-->
+                <select class="form-select border-0 flex-grow-1" v-model="selectedGenre">
+                  <option value="Genre" disabled selected>Genre</option>
+                  <option
+                    v-for="(genre, index) in genres"
+                    :key="index"
+                    :value="genre"
+                  >
+                    {{ genre }}
+                  </option>
                 </select>
                 <!--end::Select-->
               </div>
@@ -77,7 +106,7 @@
             <!--begin::Action-->
             <div class="min-w-150px text-end">
               <button
-                type="submit"
+                @click.prevent="handleSubmit"
                 class="btn btn-dark"
                 id="kt_advanced_search_button_1"
               >
@@ -90,7 +119,9 @@
 
           <!--begin::Action-->
           <div class="d-flex align-items-center">
-            <a class="fw-semibold link-white fs-5 text-light" href="#">Advanced Search </a>
+            <a class="fw-semibold link-white fs-5 text-light" href="#"
+              >Advanced Search
+            </a>
           </div>
           <!--end::Action-->
         </div>
@@ -105,9 +136,27 @@
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
+import categories from "@/core/data/book-categories";
+import { useGenreStore } from "@/stores/genre";
 
+const genresStore = useGenreStore();
+const selectedCategory = ref();
+const selectedGenre = ref('Genre');
+const genres = ref();
+const showDefault = ref(true);
+
+const handleCategoryChange = () => {
+  showDefault.value = false;
+  genres.value = selectedCategory.value.genres;
+};
+
+const handleSubmit = () => {
+  genresStore.getGenre(selectedGenre.value).then((resolve) => {
+    console.log("Genre selected: ", resolve);
+  });
+};
 export default defineComponent({
   name: "layout-toolbar",
   components: {},
@@ -115,6 +164,13 @@ export default defineComponent({
     return {
       toolbarWidthFluid,
       getAssetPath,
+      categories,
+      genres,
+      selectedCategory,
+      selectedGenre,
+      handleCategoryChange,
+      handleSubmit,
+      showDefault
     };
   },
 });

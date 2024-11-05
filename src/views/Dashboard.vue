@@ -27,12 +27,7 @@ import { LS_CONFIG_NAME_KEY } from "@/stores/config";
 export default defineComponent({
   name: "main-dashboard",
   components: {
-    MixedWidget5,
     TablesWidget9,
-    ListsWidget5,
-    MixedWidget11,
-    ListsWidget4,
-    MixedWidget9,
   },
   setup() {
     onMounted(() => {

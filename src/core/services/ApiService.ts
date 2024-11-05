@@ -32,6 +32,8 @@ class ApiService {
     ] = `Token ${JwtService.getToken()}`;
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
       "application/json";
+    ApiService.vueInstance.axios.defaults.headers.common["Content-Type"] =
+      "application/json";
   }
 
   /**
