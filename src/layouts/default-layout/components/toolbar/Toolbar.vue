@@ -20,97 +20,50 @@
 
       <!--begin::Wrapper-->
       <div class="d-flex flex-column">
+        <div>
+          <button
+            tabindex="3"
+            @click.prevent="handleRandomize"
+            id="kt_sign_in_submit"
+            class="btn btn-lg btn-success w-100 mb-5"
+            :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
+            :disabled="randomizeIndicatorActive"
+          >
+            <span class="indicator-label"> {{ !selectedGenre ? 'Randomize' : 'Randomize Again' }} </span>
+
+            <span class="indicator-progress">
+              Please wait...
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </button>
+        </div>
         <!--begin::Block-->
-        <div class="d-lg-flex align-lg-items-center">
+        <div v-if="selectedGenre" class="d-lg-flex align-lg-items-center">
           <!--begin::Simple form-->
           <div
             class="rounded d-flex flex-column flex-lg-row align-items-lg-center bg-body p-5 w-xxl-950px h-lg-60px me-lg-10 my-5"
           >
             <!--begin::Row-->
             <div class="row flex-grow-1 mb-5 mb-lg-0">
-              <!--begin::Col-->
-              <div class="col-lg-4 d-flex align-items-center mb-3 mb-lg-0">
+              <div class="col-lg-12 d-flex align-items-center mb-5 mb-lg-0">
+                <!--begin::Desktop separartor-->
+                <div
+                  class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
+                ></div>
+                <!--end::Desktop separartor-->
+
                 <KTIcon
-                  icon-name="magnifier"
+                  icon-name="element-11"
                   icon-class="fs-1 text-gray-500 me-1"
                 />
 
-                <!--begin::Input-->
+                <!--begin::Select-->
                 <input
-                  type="text"
-                  class="form-control form-control-flush flex-grow-1"
-                  name="search"
-                  value=""
-                  placeholder="Your Search"
-                />
-                <!--end::Input-->
-              </div>
-              <!--end::Col-->
-
-              <!--begin::Col-->
-              <div class="col-lg-4 d-flex align-items-center mb-5 mb-lg-0">
-                <!--begin::Desktop separartor-->
-                <div
-                  class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
-                ></div>
-                <!--end::Desktop separartor-->
-
-                <KTIcon
-                  icon-name="element-11"
-                  icon-class="fs-1 text-gray-500 me-1"
-                />
-
-                <!--begin::Select-->
-                <select
-                  class="form-select border-0 flex-grow-1"
-                  v-model="selectedCategory"
-                  @change="handleCategoryChange"
-                >
-                  <option
-                    v-if="showDefault"
-                    :value="selectedCategory"
-                    disabled
-                    selected
-                  >
-                    Category
-                  </option>
-                  <option
-                    v-for="(grouping, index) in categories"
-                    :key="index"
-                    :value="grouping"
-                  >
-                    {{ grouping.category }}
-                  </option>
-                </select>
-                <!--end::Select-->
-              </div>
-
-              <div class="col-lg-4 d-flex align-items-center mb-5 mb-lg-0">
-                <!--begin::Desktop separartor-->
-                <div
-                  class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
-                ></div>
-                <!--end::Desktop separartor-->
-
-                <KTIcon
-                  icon-name="element-11"
-                  icon-class="fs-1 text-gray-500 me-1"
-                />
-
-                <!--begin::Select-->
-                <select
-                  class="form-select border-0 flex-grow-1"
+                  class="form-select border-0 flex-grow-1 w-100"
                   v-model="selectedGenre"
-                >
-                  <option value="Genre" disabled selected>Genre</option>
-                  <option
-                    v-for="(genre, index) in genres"
-                    :key="index"
-                    :value="genre"
-                  >
-                    {{ genre }}
-                  </option>
-                </select>
+                />
                 <!--end::Select-->
               </div>
               <!--end::Col-->
@@ -118,11 +71,12 @@
             <!--end::Row-->
 
             <!--begin::Action-->
-            <div class="min-w-150px text-end">
+            <div class="min-w-150px w-100 text-end">
               <button
                 @click.prevent="handleSubmit"
                 class="btn btn-dark"
                 id="kt_advanced_search_button_1"
+                :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
               >
                 Search
               </button>
@@ -130,14 +84,6 @@
             <!--end::Action-->
           </div>
           <!--end::Simple form-->
-
-          <!--begin::Action-->
-          <div class="d-flex align-items-center">
-            <a class="fw-semibold link-white fs-5 text-light" href="#"
-              >Advanced Search
-            </a>
-          </div>
-          <!--end::Action-->
         </div>
         <!--end::Block-->
       </div>
@@ -169,6 +115,8 @@ export default defineComponent({
     const genres = ref();
     const showDefault = ref(true);
 
+    const randomizeIndicatorActive = ref(false);
+
     onMounted(() => {
       if (selectedGenre.value) {
         genresStore.getGenre(selectedGenre.value).then((resolve) => {});
@@ -179,16 +127,24 @@ export default defineComponent({
       genres.value = selectedCategory.value.genres;
     };
 
-    const handleSubmit = () => {
+    const handleRandomize = () => {
+      randomizeIndicatorActive.value = true;
+      setTimeout(() => {
+        const allGenres = categories.map((category) => category.genres).flat();
+        const randomGenre =
+          allGenres[Math.floor(Math.random() * allGenres.length)];
+        selectedGenre.value = randomGenre;
         router.push({
           name: "dashboard",
           query: {
-            category: selectedCategory.value.category,
             genre: selectedGenre.value,
           },
         });
-      genresStore.getGenre(selectedGenre.value).then((resolve) => {
-      });
+        randomizeIndicatorActive.value = false;
+      }, 2000);
+    };
+    const handleSubmit = () => {
+      genresStore.getGenre(selectedGenre.value).then((resolve) => {});
     };
 
     return {
@@ -200,7 +156,9 @@ export default defineComponent({
       selectedGenre,
       handleCategoryChange,
       handleSubmit,
+      handleRandomize,
       showDefault,
+      randomizeIndicatorActive,
     };
   },
 });

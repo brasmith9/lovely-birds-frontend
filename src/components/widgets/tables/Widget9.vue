@@ -66,7 +66,7 @@
 
                 <td class="">
                   <a
-                    :href="`https://openlibrary.org/${item.key}`"
+                    :href="`https://openlibrary.org/borrow/ia/${item?.ia}`"
                     target="_blank"
                     v-if="item?.availability?.is_readable"
                     class="btn btn-lg btn-primary w-50 mb-5"
