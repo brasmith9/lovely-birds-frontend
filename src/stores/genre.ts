@@ -1,7 +1,6 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
-import JwtService from "@/core/services/JwtService";
 
 interface Genre {
   key: string;
@@ -11,7 +10,7 @@ interface Genre {
   works: Work[];
 }
 
-interface Work {
+export interface Work {
   key: string;
   title: string;
   edition_count: number;
@@ -31,7 +30,7 @@ interface Work {
   availability: Availability;
 }
 
-interface Author {
+export interface Author {
   key: string;
   name: string;
 }
@@ -54,10 +53,13 @@ interface Availability {
 
 export const useGenreStore = defineStore("genre", () => {
   const errors = ref({});
-  const genres = ref<Genre[]>([]);
+  const loading = ref(false);
+  const genres = ref<Genre>({} as Genre);
 
-  function setGenres(subject: Genre[]) {
-    genres.value = subject;
+  function setGenres(subject: Genre) {
+    genres.value = { ...subject };
+
+    console.log("genres", genres.value);
     errors.value = {};
   }
 
@@ -66,25 +68,31 @@ export const useGenreStore = defineStore("genre", () => {
   }
 
   function purgeGenre() {
-    genres.value = [] ;
+    genres.value = {} as Genre;
     errors.value = [];
   }
 
   function getGenre(subject: string) {
-    return ApiService.get(`/subjects/love.json`)
-      .then((data) => {
-        setGenres(data.data);
+    loading.value = true;
+    ApiService.setHeader();
+    return ApiService.get(`/subjects/${subject.toLowerCase()}.json`)
+      .then(({ data }) => {
+        setGenres(data);
       })
       .catch((response) => {
-        console.log(response);
         setError(response.data.errors);
+      }).finally(() => {
+        loading.value = false;
+
       });
   }
 
-
+  const works = computed(() => genres.value.works || []);
   return {
     errors,
     genres,
+    works,
     getGenre,
+    loading
   };
 });

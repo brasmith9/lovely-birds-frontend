@@ -4,9 +4,11 @@
     <!--begin::Header-->
     <div class="card-header border-0 pt-5">
       <h3 class="card-title align-items-start flex-column">
-        <span class="card-label fw-bold fs-3 mb-1">Search Results (500)</span>
+        <span class="card-label fw-bold fs-3 mb-1"
+          >Search Results ({{ list.length }})</span
+        >
 
-        <span class="text-muted mt-1 fw-semibold fs-7">Over 500 members</span>
+        <span class="text-muted mt-1 fw-semibold fs-7">Over 5,000 Related Works</span>
       </h3>
     </div>
     <!--end::Header-->
@@ -22,10 +24,9 @@
           <!--begin::Table head-->
           <thead>
             <tr class="fw-bold text-muted">
-              <th class="min-w-150px">Authors</th>
+              <th class="min-w-150px">Books</th>
               <th class="min-w-140px">Title</th>
-              <th class="min-w-120px">Progress</th>
-              <th class="min-w-100px text-end">Actions</th>
+              <th class="min-w-200px">Action</th>
             </tr>
           </thead>
           <!--end::Table head-->
@@ -37,18 +38,18 @@
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="symbol symbol-45px me-5">
-<!--                      <img :src="item.image" alt="" />-->
+                      <!--                      <img :src="item.image" alt="" />-->
                     </div>
                     <div class="d-flex justify-content-start flex-column">
                       <a
                         href="#"
                         class="text-gray-900 fw-bold text-hover-primary fs-6"
-                        >{{ item.name }}</a
+                        >{{ item.title }}</a
                       >
 
                       <span
                         class="text-muted fw-semibold text-muted d-block fs-7"
-                        >{{ item.skills }}</span
+                        >{{ getAllAuthors(item.authors) }}</span
                       >
                     </div>
                   </div>
@@ -58,42 +59,27 @@
                   <a
                     href="#"
                     class="text-gray-900 fw-bold text-hover-primary d-block fs-6"
-                    >{{ item.companyName }}</a
-                  >
-                  <span
-                    class="text-muted fw-semibold text-muted d-block fs-7"
-                    >{{ item.companySkills }}</span
+                    >{{ item.title }}</a
                   >
                 </td>
 
-                <td class="text-end">
-                  <div class="d-flex flex-column w-100 me-2">
-                    <div class="d-flex flex-stack mb-2">
-                      <span class="text-muted me-2 fs-7 fw-semibold">
-                        {{ item.value }}%
-                      </span>
-                    </div>
-
-                    <div class="progress h-6px w-100">
-                      <div
-                        class="progress-bar"
-                        :class="`bg-${item.color}`"
-                        role="progressbar"
-                        :style="{ width: item.value + '%' }"
-                        :aria-valuenow="item.value"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
-                </td>
-
-                <td class="text-end">
+                <td class="">
                   <a
-                    href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                    :href="`https://openlibrary.org/${item.key}`"
+                    target="_blank"
+                    v-if="item?.availability?.is_readable"
+                    class="btn btn-lg btn-primary w-50 mb-5"
                   >
-                    Assign
+                    Read
+                  </a>
+
+                  <a
+                    :href="`https://openlibrary.org/${item.key}`"
+                    target="_blank"
+                    v-else
+                    class="btn btn-lg btn-warning w-50 mb-5"
+                  >
+                    Preview
                   </a>
                 </td>
               </tr>
@@ -113,66 +99,24 @@
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, ref } from "vue";
+import type { Work } from "@/stores/genre";
+import { getAllAuthors, getAllGenres } from "@/core/helpers/helpers";
 
 export default defineComponent({
   name: "kt-widget-9",
+  methods: { getAllGenres, getAllAuthors },
   components: {},
   props: {
     widgetClasses: String,
+    list: {
+      type: Array,
+      default: () => [] as Work[],
+    },
   },
   setup() {
     const checkedRows = ref<Array<number>>([]);
 
-    const list = [
-      {
-        image: getAssetPath("media/avatars/300-14.jpg"),
-        name: "Ana Simmons",
-        skills: "HTML, JS, ReactJS",
-        companyName: "Intertico",
-        companySkills: "Web, UI/UX Design",
-        value: "50",
-        color: "primary",
-      },
-      {
-        image: getAssetPath("media/avatars/300-2.jpg"),
-        name: "Jessie Clarcson",
-        skills: "C#, ASP.NET, MS SQL",
-        companyName: "Agoda",
-        companySkills: "Houses & Hotels",
-        value: "70",
-        color: "danger",
-      },
-      {
-        image: getAssetPath("media/avatars/300-5.jpg"),
-        name: "Lebron Wayde",
-        skills: "PHP, Laravel, VueJS",
-        companyName: "RoadGee",
-        companySkills: "Transportation",
-        value: "60",
-        color: "success",
-      },
-      {
-        image: getAssetPath("media/avatars/300-20.jpg"),
-        name: "Natali Goodwin",
-        skills: "Python, PostgreSQL, ReactJS",
-        companyName: "The Hill",
-        companySkills: "Insurance",
-        value: "50",
-        color: "warning",
-      },
-      {
-        image: getAssetPath("media/avatars/300-23.jpg"),
-        name: "Kevin Leonard",
-        skills: "HTML, JS, ReactJS",
-        companyName: "RoadGee",
-        companySkills: "Art Director",
-        value: "90",
-        color: "info",
-      },
-    ];
-
     return {
-      list,
       checkedRows,
       getAssetPath,
     };

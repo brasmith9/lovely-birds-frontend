@@ -27,9 +27,9 @@ class ApiService {
    * @description set the default HTTP request headers
    */
   public static setHeader(): void {
-    ApiService.vueInstance.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Token ${JwtService.getToken()}`;
+    // ApiService.vueInstance.axios.defaults.headers.common[
+    //   "Authorization"
+    // ] = `Token ${JwtService.getToken()}`;
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
       "application/json";
     ApiService.vueInstance.axios.defaults.headers.common["Content-Type"] =
@@ -56,7 +56,10 @@ class ApiService {
     resource: string,
     slug = "" as string
   ): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.get(`${resource}/${slug}`);
+    console.log(resource);
+    const url = slug ? `${resource}/${slug}` : resource;
+    console.log(url);
+    return ApiService.vueInstance.axios.get(url);
   }
 
   /**

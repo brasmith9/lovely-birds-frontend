@@ -6,7 +6,8 @@
 
     <!--begin::Col-->
     <div class="col-xxl-12">
-      <TablesWidget9 widget-classes="card-xxl-stretch mb-5 mb-xl-8" />
+      <Loading v-if="loading" />
+      <TablesWidget9 v-else :list="workList" widget-classes="card-xxl-stretch mb-5 mb-xl-8" />
     </div>
     <!--end::Col-->
   </div>
@@ -14,22 +15,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted } from "vue";
-import MixedWidget5 from "@/components/widgets/mixed/Widget5.vue";
+import { computed, defineComponent, onMounted, onUnmounted, ref } from "vue";
 import TablesWidget9 from "@/components/widgets/tables/Widget9.vue";
-import ListsWidget5 from "@/components/widgets/lists/Widget5.vue";
-import MixedWidget11 from "@/components/widgets/mixed/Widget11.vue";
-import ListsWidget4 from "@/components/widgets/lists/Widget4.vue";
-import MixedWidget9 from "@/components/widgets/mixed/Widget9.vue";
 import LayoutService from "@/core/services/LayoutService";
 import { LS_CONFIG_NAME_KEY } from "@/stores/config";
+import Loading from "@/components/kt-datatable/table-partials/Loading.vue";
+
+
+import { useGenreStore, type Work } from "@/stores/genre";
 
 export default defineComponent({
   name: "main-dashboard",
   components: {
     TablesWidget9,
+    Loading
   },
   setup() {
+    const genresStore = useGenreStore();
+
+    const workList = computed(() => genresStore.works);
+    const loading = computed(() => genresStore.loading);
     onMounted(() => {
       if (!localStorage.getItem(LS_CONFIG_NAME_KEY)) {
         LayoutService.enableToolbar();
@@ -41,6 +46,11 @@ export default defineComponent({
         LayoutService.disableToolbar();
       }
     });
+
+    return {
+      workList,
+      loading
+    }
   },
 });
 </script>
