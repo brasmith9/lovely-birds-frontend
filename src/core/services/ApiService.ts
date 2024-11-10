@@ -56,9 +56,7 @@ class ApiService {
     resource: string,
     slug = "" as string
   ): Promise<AxiosResponse> {
-    console.log(resource);
     const url = slug ? `${resource}/${slug}` : resource;
-    console.log(url);
     return ApiService.vueInstance.axios.get(url);
   }
 

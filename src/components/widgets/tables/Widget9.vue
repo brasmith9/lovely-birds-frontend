@@ -8,7 +8,9 @@
           >Search Results ({{ list.length }})</span
         >
 
-        <span class="text-muted mt-1 fw-semibold fs-7">Over 5,000 Related Works</span>
+        <span class="text-muted mt-1 fw-semibold fs-7"
+          >Over 5,000 Related Works</span
+        >
       </h3>
     </div>
     <!--end::Header-->
@@ -37,9 +39,7 @@
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="symbol symbol-45px me-5">
-                      <!--                      <img :src="item.image" alt="" />-->
-                    </div>
+                    <div class="symbol symbol-45px me-5"></div>
                     <div class="d-flex justify-content-start flex-column">
                       <a
                         href="#"
@@ -109,7 +109,7 @@ export default defineComponent({
   props: {
     widgetClasses: String,
     list: {
-      type: Array,
+      type: Array<Work>,
       default: () => [] as Work[],
     },
   },

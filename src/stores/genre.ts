@@ -49,7 +49,7 @@ interface Availability {
   isbn?: string;
   oclc?: string | null;
   openlibrary_work: string;
-  openli
+  openli;
 }
 
 export const useGenreStore = defineStore("genre", () => {
@@ -76,15 +76,16 @@ export const useGenreStore = defineStore("genre", () => {
   function getGenre(subject: string) {
     loading.value = true;
     ApiService.setHeader();
-    return ApiService.get(`/subjects/${getUrlEncodedSlug(subject).toLowerCase()}.json`)
+    return ApiService.get(
+      `/subjects/${getUrlEncodedSlug(subject).toLowerCase()}.json`,
+    )
       .then(({ data }) => {
         setGenres(data);
+        loading.value = false;
       })
       .catch((response) => {
-        setError(response.data.errors);
-      }).finally(() => {
+        setError(response);
         loading.value = false;
-
       });
   }
 
@@ -94,6 +95,6 @@ export const useGenreStore = defineStore("genre", () => {
     genres,
     works,
     getGenre,
-    loading
+    loading,
   };
 });
