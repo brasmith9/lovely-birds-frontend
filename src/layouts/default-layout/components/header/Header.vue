@@ -9,31 +9,7 @@
       }"
       class="d-flex align-items-stretch justify-content-between"
     >
-      <!--begin::Aside mobile toggle-->
-      <div
-        class="d-flex align-items-center d-lg-none ms-n3 me-1"
-        title="Show aside menu"
-      >
-        <div
-          class="btn btn-icon btn-active-color-primary w-40px h-40px"
-          id="kt_aside_toggle"
-        >
-          <KTIcon icon-name="abstract-14" icon-class="fs-1" />
-        </div>
-      </div>
-      <!--end::Aside mobile toggle-->
 
-      <!--begin::Mobile logo-->
-      <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-        <a href="#" class="d-lg-none">
-          <img
-            alt="Logo"
-            :src="getAssetPath('media/logos/demo4-mobile.svg')"
-            class="h-25px"
-          />
-        </a>
-      </div>
-      <!--end::Mobile logo-->
 
       <div id="kt_toolbar_container" class="d-flex align-items-center">
         <KTPageTitle />

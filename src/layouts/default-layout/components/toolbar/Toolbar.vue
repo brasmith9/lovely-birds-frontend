@@ -61,8 +61,19 @@
                 />
 
                 <!--begin::Select-->
-                <select class="form-select border-0 flex-grow-1" v-model="selectedCategory" @change="handleCategoryChange">
-                  <option v-if="showDefault" :value="selectedCategory" disabled selected >Category</option>
+                <select
+                  class="form-select border-0 flex-grow-1"
+                  v-model="selectedCategory"
+                  @change="handleCategoryChange"
+                >
+                  <option
+                    v-if="showDefault"
+                    :value="selectedCategory"
+                    disabled
+                    selected
+                  >
+                    Category
+                  </option>
                   <option
                     v-for="(grouping, index) in categories"
                     :key="index"
@@ -87,7 +98,10 @@
                 />
 
                 <!--begin::Select-->
-                <select class="form-select border-0 flex-grow-1" v-model="selectedGenre">
+                <select
+                  class="form-select border-0 flex-grow-1"
+                  v-model="selectedGenre"
+                >
                   <option value="Genre" disabled selected>Genre</option>
                   <option
                     v-for="(genre, index) in genres"
@@ -136,31 +150,47 @@
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { toolbarWidthFluid } from "@/layouts/default-layout/config/helper";
 import categories from "@/core/data/book-categories";
 import { useGenreStore } from "@/stores/genre";
+import { useRoute, useRouter } from "vue-router";
 
-const genresStore = useGenreStore();
-const selectedCategory = ref();
-const selectedGenre = ref('Genre');
-const genres = ref();
-const showDefault = ref(true);
-
-const handleCategoryChange = () => {
-  showDefault.value = false;
-  genres.value = selectedCategory.value.genres;
-};
-
-const handleSubmit = () => {
-  genresStore.getGenre(selectedGenre.value).then((resolve) => {
-    console.log("Genre selected: ", resolve);
-  });
-};
 export default defineComponent({
   name: "layout-toolbar",
   components: {},
   setup() {
+    const route = useRoute();
+    const query = route.query;
+    const router = useRouter();
+    const genresStore = useGenreStore();
+    const selectedCategory = ref();
+    const selectedGenre = ref(query.genre as string);
+    const genres = ref();
+    const showDefault = ref(true);
+
+    onMounted(() => {
+      if (selectedGenre.value) {
+        genresStore.getGenre(selectedGenre.value).then((resolve) => {});
+      }
+    });
+    const handleCategoryChange = () => {
+      showDefault.value = false;
+      genres.value = selectedCategory.value.genres;
+    };
+
+    const handleSubmit = () => {
+        router.push({
+          name: "dashboard",
+          query: {
+            category: selectedCategory.value.category,
+            genre: selectedGenre.value,
+          },
+        });
+      genresStore.getGenre(selectedGenre.value).then((resolve) => {
+      });
+    };
+
     return {
       toolbarWidthFluid,
       getAssetPath,
@@ -170,7 +200,7 @@ export default defineComponent({
       selectedGenre,
       handleCategoryChange,
       handleSubmit,
-      showDefault
+      showDefault,
     };
   },
 });

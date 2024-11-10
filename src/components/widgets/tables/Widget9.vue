@@ -5,11 +5,11 @@
     <div class="card-header border-0 pt-5">
       <h3 class="card-title align-items-start flex-column">
         <span class="card-label fw-bold fs-3 mb-1"
-          >Search Results ({{ list.length }})</span
+        >Search Results ({{ list.length }})</span
         >
 
         <span class="text-muted mt-1 fw-semibold fs-7"
-          >Over 5,000 Related Works</span
+        >Over 5,000 Related Works</span
         >
       </h3>
     </div>
@@ -25,16 +25,17 @@
         >
           <!--begin::Table head-->
           <thead>
-            <tr class="fw-bold text-muted">
-              <th class="min-w-150px">Books</th>
-              <th class="min-w-140px">Title</th>
-              <th class="min-w-200px">Action</th>
-            </tr>
+          <tr class="fw-bold text-muted">
+            <th class="min-w-150px">Books</th>
+            <th class="min-w-140px">Title</th>
+            <th class="min-w-200px">Action</th>
+          </tr>
           </thead>
           <!--end::Table head-->
 
           <!--begin::Table body-->
           <tbody>
+          <template v-if="list.length > 0">
             <template v-for="(item, index) in list" :key="index">
               <tr>
                 <td>
@@ -44,12 +45,12 @@
                       <a
                         href="#"
                         class="text-gray-900 fw-bold text-hover-primary fs-6"
-                        >{{ item.title }}</a
+                      >{{ item.title }}</a
                       >
 
                       <span
                         class="text-muted fw-semibold text-muted d-block fs-7"
-                        >{{ getAllAuthors(item.authors) }}</span
+                      >{{ getAllAuthors(item.authors) }}</span
                       >
                     </div>
                   </div>
@@ -59,7 +60,7 @@
                   <a
                     href="#"
                     class="text-gray-900 fw-bold text-hover-primary d-block fs-6"
-                    >{{ item.title }}</a
+                  >{{ item.title }}</a
                   >
                 </td>
 
@@ -84,16 +85,23 @@
                 </td>
               </tr>
             </template>
-          </tbody>
-          <!--end::Table body-->
-        </table>
-        <!--end::Table-->
+          </template>
+
+          <template v-else>
+            <div class="d-flex justify-content-center">
+            <h3>No Data To Display</h3>
       </div>
-      <!--end::Table container-->
-    </div>
-    <!--begin::Body-->
-  </div>
-  <!--end::Tables Widget 9-->
+</template>
+</tbody>
+<!--end::Table body-->
+</table>
+<!--end::Table-->
+</div>
+<!--end::Table container-->
+</div>
+<!--begin::Body-->
+</div>
+<!--end::Tables Widget 9-->
 </template>
 
 <script lang="ts">
@@ -110,16 +118,16 @@ export default defineComponent({
     widgetClasses: String,
     list: {
       type: Array<Work>,
-      default: () => [] as Work[],
-    },
+      default: () => [] as Work[]
+    }
   },
   setup() {
     const checkedRows = ref<Array<number>>([]);
 
     return {
       checkedRows,
-      getAssetPath,
+      getAssetPath
     };
-  },
+  }
 });
 </script>

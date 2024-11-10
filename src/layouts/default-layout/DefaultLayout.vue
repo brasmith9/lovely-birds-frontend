@@ -1,13 +1,6 @@
 <template>
   <!-- begin:: Body -->
   <div class="page d-flex flex-row flex-column-fluid">
-    <!-- begin:: Aside Left -->
-    <KTAside
-      v-if="asideEnabled"
-      :lightLogo="themeLightLogo"
-      :darkLogo="themeDarkLogo"
-    />
-    <!-- end:: Aside Left -->
 
     <div id="kt_wrapper" class="d-flex flex-column flex-row-fluid wrapper">
       <KTHeader />
