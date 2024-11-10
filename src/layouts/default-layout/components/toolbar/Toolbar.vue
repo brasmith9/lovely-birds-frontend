@@ -29,7 +29,9 @@
             :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
             :disabled="randomizeIndicatorActive"
           >
-            <span class="indicator-label"> {{ !selectedGenre ? 'Randomize' : 'Randomize Again' }} </span>
+            <span class="indicator-label">
+              {{ !selectedGenre ? "Randomize" : "Randomize Again" }}
+            </span>
 
             <span class="indicator-progress">
               Please wait...
