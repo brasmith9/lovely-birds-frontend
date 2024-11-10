@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
+import { getUrlEncodedSlug } from "@/core/helpers/helpers";
 
 interface Genre {
   key: string;
@@ -75,7 +76,7 @@ export const useGenreStore = defineStore("genre", () => {
   function getGenre(subject: string) {
     loading.value = true;
     ApiService.setHeader();
-    return ApiService.get(`/subjects/${subject.toLowerCase()}.json`)
+    return ApiService.get(`/subjects/${getUrlEncodedSlug(subject).toLowerCase()}.json`)
       .then(({ data }) => {
         setGenres(data);
       })

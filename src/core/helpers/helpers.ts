@@ -19,3 +19,9 @@ export const getAllGenres = (genres: String[]) => {
   }
   return genres.map((author) => author).join(", ");
 }
+
+export const getUrlEncodedSlug = (searchTerm: String) => {
+  const words = searchTerm.split(" ");
+  return words.map((word) => word).join("+");
+
+}
