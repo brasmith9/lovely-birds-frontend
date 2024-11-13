@@ -1,7 +1,6 @@
 <template>
   <!-- begin:: Body -->
   <div class="page d-flex flex-row flex-column-fluid">
-
     <div id="kt_wrapper" class="d-flex flex-column flex-row-fluid wrapper">
       <KTHeader />
 
@@ -29,6 +28,7 @@
   <!-- end:: Body -->
   <KTScrollTop />
   <KTDrawerMessenger />
+  <EventDrawer />
 </template>
 
 <script lang="ts">
@@ -63,10 +63,12 @@ import {
   toolbarDisplay,
 } from "@/layouts/default-layout/config/helper";
 import LayoutService from "@/core/services/LayoutService";
+import EventDrawer from "@/layouts/default-layout/components/extras/EventDrawer.vue";
 
 export default defineComponent({
   name: "main-layout",
   components: {
+    EventDrawer,
     KTAside,
     KTHeader,
     KTFooter,
@@ -98,7 +100,7 @@ export default defineComponent({
         nextTick(() => {
           reinitializeComponents();
         });
-      }
+      },
     );
 
     return {

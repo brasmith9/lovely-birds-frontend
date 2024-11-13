@@ -12,7 +12,13 @@ const MainMenuConfig: Array<MenuItem> = [
     route: "/history",
     keenthemesIcon: "switch",
     bootstrapIcon: "bi-toggles",
-  }
+  },
+  {
+    heading: "Activity",
+    route: "/activity",
+    keenthemesIcon: "switch",
+    bootstrapIcon: "bi-toggles",
+  },
 ];
 
 export default MainMenuConfig;

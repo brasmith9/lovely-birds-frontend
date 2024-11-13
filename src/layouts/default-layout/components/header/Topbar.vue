@@ -6,6 +6,16 @@
     <div class="d-flex align-items-center ms-1 ms-lg-3">
       <!--begin::Menu wrapper-->
       <div
+        class="btn btn-primary mx-5"
+        id="kt_drawer_event_toggle"
+      >
+        <KTIcon icon-name="message-text-2" icon-class="fs-1" />
+
+        <span>
+          Create Event
+        </span>
+      </div>
+      <div
         class="btn btn-icon btn-active-light-primary position-relative w-30px h-30px w-md-40px h-md-40px"
         id="kt_drawer_chat_toggle"
       >

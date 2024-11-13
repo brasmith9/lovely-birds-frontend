@@ -20,26 +20,30 @@
 
       <!--begin::Wrapper-->
       <div class="d-flex flex-column">
-        <div>
-          <button
-            tabindex="3"
-            @click.prevent="handleRandomize"
-            id="kt_sign_in_submit"
-            class="btn btn-lg btn-success w-100 mb-5"
-            :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
-            :disabled="randomizeIndicatorActive"
+        <div class="d-lg-flex align-lg-items-center">
+          <div
+            class="rounded d-flex flex-column flex-lg-row align-items-lg-center w-xxl-950px h-lg-60px me-lg-10 my-5"
           >
+            <button
+              tabindex="3"
+              @click.prevent="handleRandomize"
+              id="kt_sign_in_submit"
+              class="btn btn-lg btn-warning w-100 mb-5"
+              :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
+              :disabled="randomizeIndicatorActive"
+            >
             <span class="indicator-label">
               {{ !selectedGenre ? "Randomize" : "Randomize Again" }}
             </span>
 
-            <span class="indicator-progress">
+              <span class="indicator-progress">
               Please wait...
               <span
                 class="spinner-border spinner-border-sm align-middle ms-2"
               ></span>
             </span>
-          </button>
+            </button>
+          </div>
         </div>
         <!--begin::Block-->
         <div v-if="selectedGenre" class="d-lg-flex align-lg-items-center">
@@ -50,20 +54,18 @@
             <!--begin::Row-->
             <div class="row flex-grow-1 mb-5 mb-lg-0">
               <div class="col-lg-12 d-flex align-items-center mb-5 mb-lg-0">
-                <!--begin::Desktop separartor-->
-                <div
-                  class="bullet bg-secondary d-none d-lg-block h-30px w-2px me-5"
-                ></div>
-                <!--end::Desktop separartor-->
-
                 <KTIcon
-                  icon-name="element-11"
+                  icon-name="search-list"
                   icon-class="fs-1 text-gray-500 me-1"
                 />
 
+                <h3>Genre:</h3>
+
                 <!--begin::Select-->
                 <input
-                  class="form-select border-0 flex-grow-1 w-100"
+                  disabled
+                  type="text"
+                  class="form-input border-0 flex-grow-1 form-control-white form-control-sm w-150px ps-9"
                   v-model="selectedGenre"
                 />
                 <!--end::Select-->
@@ -73,14 +75,14 @@
             <!--end::Row-->
 
             <!--begin::Action-->
-            <div class="min-w-150px w-100 text-end">
+            <div class="min-w-150px w-100 text-center">
               <button
                 @click.prevent="handleSubmit"
                 class="btn btn-dark"
                 id="kt_advanced_search_button_1"
                 :data-kt-indicator="randomizeIndicatorActive ? 'on' : 'off'"
               >
-                Search
+                Find Books on {{ selectedGenre }}
               </button>
             </div>
             <!--end::Action-->

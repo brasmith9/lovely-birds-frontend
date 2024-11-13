@@ -23,11 +23,53 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "/history",
-        name: "builder",
-        component: () => import("@/views/LayoutBuilder.vue"),
+        name: "history",
+        component: () => import("@/views/History.vue"),
         meta: {
           pageTitle: "History",
           breadcrumbs: [],
+        },
+      },
+      {
+        path: "/activity",
+        name: "activity",
+        component: () => import("@/views/Activity.vue"),
+        meta: {
+          pageTitle: "Activity",
+          breadcrumbs: [],
+        },
+      },
+    ],
+  },
+  {
+    path: "/",
+    component: () => import("@/layouts/AuthLayout.vue"),
+    children: [
+      {
+        path: "/sign-in",
+        name: "sign-in",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/SignIn.vue"),
+        meta: {
+          pageTitle: "Sign In",
+        },
+      },
+      {
+        path: "/sign-up",
+        name: "sign-up",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/SignUp.vue"),
+        meta: {
+          pageTitle: "Sign Up",
+        },
+      },
+      {
+        path: "/password-reset",
+        name: "password-reset",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
+        meta: {
+          pageTitle: "Password reset",
         },
       },
     ],
